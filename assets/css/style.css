@@ -319,20 +319,20 @@ img {
     z-index: var(--z-back);
 }
 
-.skills__html {
+.skills__unity {
     width: 95%;
 }
 
-.skills__css {
-    width: 85%;
+.skills__csharp {
+    width: 80%;
 }
 
-.skills__js {
+.skills__cpp {
     width: 65%;
 }
 
-.skills__ux {
-    width: 85%;
+.skills__gamedev {
+    width: 70%;
 }
 
 .skills__img {
