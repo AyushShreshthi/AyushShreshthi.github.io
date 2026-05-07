@@ -546,8 +546,11 @@ section {
   background: linear-gradient(135deg, rgba(0,245,212,0.03), transparent 60%);
   opacity: 0;
   transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 0;
 }
 .project-card:hover::before { opacity: 1; }
+.project-card > * { position: relative; z-index: 1; }
 .card-num {
   font-family: 'Press Start 2P', monospace;
   font-size: 10px;
@@ -581,6 +584,9 @@ section {
   text-transform: uppercase;
   display: flex; align-items: center; gap: 8px;
   transition: gap 0.2s;
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
 }
 .card-link::after { content: '→'; }
 .card-link:hover { gap: 12px; }
