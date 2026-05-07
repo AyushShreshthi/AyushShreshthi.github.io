@@ -122,6 +122,43 @@ nav {
 .nav-links a:hover { color: var(--primary); text-shadow: var(--glow); }
 .nav-links a:hover::after { width: 100%; }
 
+/* HERO VIDEO BACKGROUND */
+.hero-video-container {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  filter: blur(3px) brightness(0.7);
+  transform: scale(1.05);
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.hero-video-bg.active {
+  opacity: 1;
+}
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(3,7,18,0.5) 0%,
+    rgba(3,7,18,0.35) 40%,
+    rgba(3,7,18,0.8) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
 /* HERO */
 #hero {
   min-height: 100vh;
@@ -131,6 +168,10 @@ nav {
   position: relative;
   padding: 100px 24px 60px;
   overflow: hidden;
+}
+#hero > *:not(.hero-video-bg):not(.hero-video-overlay) {
+  position: relative;
+  z-index: 2;
 }
 
 .hero-bg-orb {
@@ -831,6 +872,17 @@ footer {
 
 <!-- HERO -->
 <section id="hero">
+  <!-- VIDEO BACKGROUND - Two videos playing sequentially in loop -->
+  <div class="hero-video-container">
+    <video class="hero-video-bg vid" id="vid1" muted playsinline>
+      <source src="assets/files/hero-bg1.mp4" type="video/mp4">
+    </video>
+    <video class="hero-video-bg vid" id="vid2" muted playsinline>
+      <source src="assets/files/hero-bg2.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-video-overlay"></div>
+
   <div class="hero-bg-orb orb1"></div>
   <div class="hero-bg-orb orb2"></div>
   <div class="hero-bg-orb orb3"></div>
@@ -1275,6 +1327,26 @@ const skillObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.3 });
 const skillSection = document.getElementById('skills');
 if (skillSection) skillObserver.observe(skillSection);
+
+// SEQUENTIAL VIDEO PLAYER
+const vid1 = document.getElementById('vid1');
+const vid2 = document.getElementById('vid2');
+const videos = [vid1, vid2];
+
+function playVideo(index) {
+  const active = videos[index];
+  const inactive = videos[1 - index];
+  active.currentTime = 0;
+  active.play().catch(() => {});
+  active.classList.add('active');
+  inactive.classList.remove('active');
+}
+
+vid1.addEventListener('ended', () => { playVideo(1); });
+vid2.addEventListener('ended', () => { playVideo(0); });
+
+// Start with vid1
+playVideo(0);
 
 // KONAMI CODE EASTER EGG
 const konami = [38,38,40,40,37,39,37,39,66,65];
